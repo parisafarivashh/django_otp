@@ -1,20 +1,24 @@
 import base64
 import re
 
-import pyotp
-
 from django_otp.settings import SECRET_KEY
 
 
-def generate_otp_code(phone: str):
+def _generate_totp(phone: str):
+    import pyotp
+
     challenge = prepare_challenge(phone)
     totp = pyotp.TOTP(challenge, interval=120)
+    return totp
+
+
+def generate_otp_code(phone: str):
+    totp = _generate_totp(phone)
     return totp.now()
 
 
 def verification_otp_code(phone: str, otp: str):
-    challenge = prepare_challenge(phone)
-    totp = pyotp.TOTP(challenge, interval=120)
+    totp = _generate_totp(phone)
     return totp.verify(otp)
 
 
