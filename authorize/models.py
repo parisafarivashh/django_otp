@@ -38,6 +38,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_system = models.BooleanField(default=False)
     is_admin = models.BooleanField(default=False)
     password = models.CharField(max_length=255)
+    is_verified = models.BooleanField(default=False)
 
     objects = UserManager()
 

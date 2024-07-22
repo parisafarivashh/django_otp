@@ -44,6 +44,13 @@ class RegisterUserSerializer(serializers.ModelSerializer):
         return user
 
 
+class RegisterUserResponseSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = User
+        fields = ['id', 'phone']
+
+
 class OtpSerializer(serializers.Serializer):
     phone_regex = RegexValidator(
         regex=r'09(\d{9})$',
