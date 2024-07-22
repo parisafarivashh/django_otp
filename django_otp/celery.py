@@ -25,3 +25,7 @@ app.conf.task_queues = {
     },
 }
 
+app.conf.task_routes = {
+    'authorize.tasks.sync_member_task': {'queue': 'sync_member'},
+    '*': {'queue': 'default'},
+}
