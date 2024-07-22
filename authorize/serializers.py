@@ -48,7 +48,7 @@ class RegisterUserResponseSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['id', 'phone']
+        fields = '__all__'
 
 
 class OtpSerializer(serializers.Serializer):
