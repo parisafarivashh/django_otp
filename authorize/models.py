@@ -2,11 +2,21 @@ from django.contrib.auth.base_user import BaseUserManager, AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin
 from django.core.validators import RegexValidator
 from django.db import models
-from django.db.models.signals import post_save
-from django.dispatch import receiver
+
+
+class UserQueryset(models.QuerySet):
+
+    def user_exists(self, phone):
+        return self.filter(phone=phone, is_verified=True)
 
 
 class UserManager(BaseUserManager):
+
+    def get_queryset(self):
+        return UserQueryset(self.model, self._db)
+
+    def user_exists(self, phone):
+        return self.get_queryset().user_exists(phone)
 
     def create_user(self, phone, password):
         user = self.model(phone=phone)
