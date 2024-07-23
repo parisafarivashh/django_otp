@@ -33,9 +33,16 @@ class RegisterUserSerializer(serializers.ModelSerializer):
         return super().validate(attrs)
 
     def create(self, validated_data):
+        user_exists = User.objects.user_exists(
+            phone=validated_data['phone'],
+        )
+        if user_exists:
+            return User.objects.filter(phone=validated_data['phone']).first()
+
         password = validated_data.pop('password')
         user = User(**validated_data)
         user.set_password(password)
+        user.is_verified = True
         user.save()
         # user = User.objects.create_user(
         #     phone=validated_data['phone'],
