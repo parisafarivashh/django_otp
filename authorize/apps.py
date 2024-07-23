@@ -1,4 +1,9 @@
+import logging
+
 from django.apps import AppConfig
+
+
+logger = logging.getLogger('django')
 
 
 class AuthorizeConfig(AppConfig):
@@ -7,3 +12,4 @@ class AuthorizeConfig(AppConfig):
 
     def ready(self):
         import authorize.signals
+

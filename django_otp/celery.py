@@ -1,5 +1,7 @@
 from __future__ import absolute_import, unicode_literals
 import os
+
+import celery
 from celery import Celery
 from django.conf import settings
 
@@ -29,3 +31,9 @@ app.conf.task_routes = {
     'authorize.tasks.sync_member_task': {'queue': 'sync_member'},
     '*': {'queue': 'default'},
 }
+
+
+class BaseTaskWithRetry(celery.Task):
+    autoretry_for = (Exception,)
+    retry_kwargs = {'max_retries': 3}
+    retry_backoff = True
