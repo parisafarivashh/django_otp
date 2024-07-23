@@ -3,6 +3,7 @@
 from django.core.management.base import BaseCommand, CommandError
 import subprocess
 
+
 class Command(BaseCommand):
     help = 'Manage Celery worker and Flower'
 
@@ -19,6 +20,6 @@ class Command(BaseCommand):
             subprocess.call(['celery', '-A', 'django_otp', 'worker', '--loglevel=info'])
         elif service == 'flower':
             self.stdout.write(self.style.SUCCESS(f'Starting Flower on port {port}...'))
-            subprocess.call(['celery', '-A', 'django_otp', 'flower', '--port', str(port)])
+            subprocess.call(['celery', '-A', 'django_otp', 'flower', f'--port == {str(port)}'])
         else:
             raise CommandError('Invalid service specified. Use "worker" or "flower".')
