@@ -2,6 +2,7 @@ from django.contrib.auth.base_user import BaseUserManager, AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin
 from django.core.validators import RegexValidator
 from django.db import models
+from django.db.models import F
 
 
 class UserQueryset(models.QuerySet):
@@ -47,10 +48,16 @@ class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField()
     date_joined = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
-    is_system = models.BooleanField(default=False)
-    is_admin = models.BooleanField(default=False)
+    is_system = models.BooleanField(db_default=False)
+    is_admin = models.BooleanField(db_default=False)
     password = models.CharField(max_length=255)
-    is_verified = models.BooleanField(default=False)
+    is_verified = models.BooleanField(db_default=False)
+
+    full_name = models.GeneratedField(
+        expression=F('first_name') + F('last_name'),
+        output_field=models.CharField(max_length=100),
+        db_persist=False,
+    )
 
     objects = UserManager()
 
