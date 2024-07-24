@@ -1,8 +1,8 @@
 from django.urls import path
 from rest_framework_simplejwt.views import TokenRefreshView
 
-from authorize.views import TokenController, OtpGeneratorController, UserRegisterController
-
+from authorize.views import TokenController, OtpGeneratorController, \
+    UserRegisterController, RegisterAdminController, AdminLoginController
 
 urlpatterns = [
     path(
@@ -25,4 +25,15 @@ urlpatterns = [
         UserRegisterController.as_view(),
         name='register user',
     ),
+    path(
+        'admin/register/',
+        RegisterAdminController.as_view(),
+        name='register admin user',
+    ),
+    path(
+        'admin/login/',
+        AdminLoginController.as_view(),
+        name='login admin user',
+    ),
+
 ]

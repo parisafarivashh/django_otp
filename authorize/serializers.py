@@ -65,3 +65,24 @@ class OtpSerializer(serializers.Serializer):
     )
     phone = serializers.CharField(validators=[phone_regex])
 
+
+class AdminUserSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = User
+        fields = ['phone', 'password', 'first_name', 'last_name', 'email']
+        extra_kwargs = {
+            'password': {'write_only': True},
+            'first_name': {'required': False},
+            'last_name': {'required': False},
+        }
+
+    def create(self, validated_data):
+        password = validated_data.pop('password')
+        user = User(**validated_data)
+        user.set_password(password)
+        user.is_admin = True
+        user.save()
+        return user
+
+
